@@ -1,5 +1,6 @@
 import tensorflow as tf
 import numpy as np
+from tensorflow import Tensor
 
 """
 
@@ -13,7 +14,10 @@ likelihoods of those samples.
 
 """
 
-def gaussian_likelihood(x, mu, log_std):
+EPSILON = 1e-8
+
+
+def gaussian_likelihood(x: Tensor, mu: Tensor, log_std: Tensor) -> Tensor:
     """
     Args:
         x: Tensor with shape [batch, dim]
@@ -23,15 +27,23 @@ def gaussian_likelihood(x, mu, log_std):
     Returns:
         Tensor with shape [batch]
     """
-    #######################
-    #                     #
-    #   YOUR CODE HERE    #
-    #                     #
-    #######################
-    return tf.constant(0)
+    print(x)
+    print(mu)
+    print(log_std)
+
+    std = tf.exp(log_std) + EPSILON
+    expr = -0.5 * (
+        ((x - mu) / std) ** 2 +
+        2 * log_std +
+        np.log(2 * np.pi)
+    )
+
+    result = tf.reduce_sum(expr, axis=1)
+    print('Result: %s' % result)
+    return result
 
 
-if __name__ == '__main__':
+def main():
     """
     Run this file to verify your solution.
     """
@@ -58,3 +70,7 @@ if __name__ == '__main__':
 
     correct = np.allclose(your_result, true_result)
     print_result(correct)
+
+
+if __name__ == '__main__':
+    main()
