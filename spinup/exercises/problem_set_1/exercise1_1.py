@@ -27,10 +27,6 @@ def gaussian_likelihood(x: Tensor, mu: Tensor, log_std: Tensor) -> Tensor:
     Returns:
         Tensor with shape [batch]
     """
-    print(x)
-    print(mu)
-    print(log_std)
-
     std = tf.exp(log_std) + EPSILON
     expr = -0.5 * (
         ((x - mu) / std) ** 2 +
@@ -38,9 +34,7 @@ def gaussian_likelihood(x: Tensor, mu: Tensor, log_std: Tensor) -> Tensor:
         np.log(2 * np.pi)
     )
 
-    result = tf.reduce_sum(expr, axis=1)
-    print('Result: %s' % result)
-    return result
+    return tf.reduce_sum(expr, axis=1)
 
 
 def main():
